@@ -79,8 +79,8 @@ jobs:
         run: pnpm run build
 
       - name: Test Macos
-        # run: pnpm run test-serve css-dynamic-import
-        run: pnpm run test-serve
+        run: pnpm run test-serve css-dynamic-import
+#         run: pnpm run test-serve
       # - name: Test unit
       #   run: pnpm run test-unit
 
