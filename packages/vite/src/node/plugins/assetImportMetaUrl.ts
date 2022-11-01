@@ -70,7 +70,7 @@ export function assetImportMetaUrlPlugin(config: ResolvedConfig): Plugin {
                 if (!newUrl.startsWith('.')) {
                   newUrl = `/${newUrl}`
                 }
-                newUrl = '`' + newUrl
+                newUrl = `\`${newUrl}`
               }
 
               const pattern = JSON.stringify(buildGlobPattern(templateLiteral))
