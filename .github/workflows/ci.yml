@@ -80,7 +80,7 @@ jobs:
 
       - name: Test Macos
         # run: pnpm run test-serve css-dynamic-import
-        run: pnpm run test
+        run: pnpm run test-serve
       # - name: Test unit
       #   run: pnpm run test-unit
 
