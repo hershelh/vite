@@ -71,7 +71,7 @@ function preload(
     return baseModule()
   }
 
-  const links = document.getElementsByTagName('link')
+  // const links = document.getElementsByTagName('link')
 
   return Promise.all(
     deps.map((dep) => {
@@ -83,21 +83,23 @@ function preload(
       seen[dep] = true
       const isCss = dep.endsWith('.css')
       const cssSelector = isCss ? '[rel="stylesheet"]' : ''
-      const isBaseRelative = !!importerUrl
+      // @ts-ignore check if the file is already preloaded by SSR markup
+      if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
+        // const isBaseRelative = !!importerUrl
 
-      // check if the file is already preloaded by SSR markup
-      if (isBaseRelative) {
-        // When isBaseRelative is true then we have `importerUrl` and `dep` is
-        // already converted to an absolute URL by the `assetsURL` function
-        for (let i = links.length - 1; i >= 0; i--) {
-          const link = links[i]
-          // The `links[i].href` is an absolute URL thanks to browser doing the work
-          // for us. See https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflecting-content-attributes-in-idl-attributes:idl-domstring-5
-          if (link.href === dep && (!isCss || link.rel === 'stylesheet')) {
-            return
-          }
-        }
-      } else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
+        // check if the file is already preloaded by SSR markup
+        // if (isBaseRelative) {
+        //   // When isBaseRelative is true then we have `importerUrl` and `dep` is
+        //   // already converted to an absolute URL by the `assetsURL` function
+        //   for (let i = links.length - 1; i >= 0; i--) {
+        //     const link = links[i]
+        //     // The `links[i].href` is an absolute URL thanks to browser doing the work
+        //     // for us. See https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflecting-content-attributes-in-idl-attributes:idl-domstring-5
+        //     if (link.href === dep && (!isCss || link.rel === 'stylesheet')) {
+        //       return
+        //     }
+        //   }
+        // } else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
         return
       }
 
