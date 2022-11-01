@@ -26,7 +26,7 @@ import { preloadHelperId } from './importAnalysisBuild'
 export function assetImportMetaUrlPlugin(config: ResolvedConfig): Plugin {
   const normalizedPublicDir = normalizePath(config.publicDir)
   let assetResolver: ResolveFn
-  let aliaResolver: ResolveFn
+  // let aliaResolver: ResolveFn
 
   return {
     name: 'vite:asset-import-meta-url',
@@ -57,21 +57,21 @@ export function assetImportMetaUrlPlugin(config: ResolvedConfig): Plugin {
             const ast = this.parse(rawUrl)
             const templateLiteral = (ast as any).body[0].expression
             if (templateLiteral.expressions.length) {
-              let newUrl: string | undefined
+              // let newUrl: string | undefined
               // rawUrl could include alias, try to resolve it
-              aliaResolver ??= config.createResolver()
-              const resolvedUrl = await aliaResolver(
-                rawUrl.slice(1),
-                undefined,
-                true
-              )
-              if (resolvedUrl) {
-                newUrl = normalizePath(path.relative(config.root, resolvedUrl))
-                if (!newUrl.startsWith('.')) {
-                  newUrl = `/${newUrl}`
-                }
-                newUrl = `\`${newUrl}`
-              }
+              // aliaResolver ??= config.createResolver()
+              // const resolvedUrl = await aliaResolver(
+              //   rawUrl.slice(1),
+              //   undefined,
+              //   true
+              // )
+              // if (resolvedUrl) {
+              //   newUrl = normalizePath(path.relative(config.root, resolvedUrl))
+              //   if (!newUrl.startsWith('.')) {
+              //     newUrl = `/${newUrl}`
+              //   }
+              //   newUrl = `\`${newUrl}`
+              // }
 
               const pattern = JSON.stringify(buildGlobPattern(templateLiteral))
               // Note: native import.meta.url is not supported in the baseline
@@ -81,9 +81,7 @@ export function assetImportMetaUrlPlugin(config: ResolvedConfig): Plugin {
               s.update(
                 index,
                 index + exp.length,
-                `new URL((import.meta.glob(${pattern}, { eager: true, import: 'default', as: 'url' }))[${
-                  newUrl ?? rawUrl
-                }], self.location)`
+                `new URL((import.meta.glob(${pattern}, { eager: true, import: 'default', as: 'url' }))[${rawUrl}], self.location)`
               )
               continue
             }
